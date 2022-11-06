@@ -1,0 +1,81 @@
+<?php
+
+/**
+ * @file
+ * Microsoft Clarity main module file.
+ *
+ * Adds the required Javascript to all your Drupal pages to allow integration
+ * with the Clarity service.
+ */
+
+use Drupal\Core\Cache\Cache;
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function microsoft_clarity_help($route_name, RouteMatchInterface $route_match) {
+  if ($route_name === 'help.page.microsoft_clarity') {
+    $output = '<h3>' . t('About') . '</h3>';
+    $output .= '<p>' . t('<a href=":project">Clarity</a> is a free, easy-to-use tool that captures how real people actually use your site. Setup is easy, and you will start getting data in minutes. Easily get heatmaps, session recordings and more. GDPR and CCPA ready, no sampling and built on open source.', [':project' => 'https://clarity.microsoft.com/']) . '</p>';
+    return $output;
+  }
+}
+
+/**
+ * Implements hook_page_attachments().
+ *
+ * Insert JavaScript to the appropriate scope/region of the page.
+ */
+function microsoft_clarity_page_attachments(array &$page) {
+  $config = \Drupal::config('microsoft_clarity.settings');
+
+  // Add module cache tags.
+  $page['#cache']['tags'] = Cache::mergeTags($page['#cache']['tags'] ?? [], $config->getCacheTags());
+
+  // Return if project_id is not set.
+  if (empty($config->get('project_id'))) {
+    return;
+  }
+
+  // Return if current request is not in tracking scope.
+  $account = \Drupal::currentUser();
+  /** @var \Drupal\microsoft_clarity\Helpers\VisiblityTracker $visibilityTracker */
+  $visibilityTracker = \Drupal::service('microsoft_clarity.visibility');
+  if (!$visibilityTracker->getVisibilityPages() || !$visibilityTracker->getVisibilityRoles($account)) {
+    return;
+  }
+
+  /** @var \Drupal\microsoft_clarity\JavascriptLocalCache $javascript_service */
+  $javascript_service = \Drupal::service('microsoft_clarity.javascript_cache');
+  $page['#attached']['html_head'][] = [
+    [
+      '#tag' => 'script',
+      '#attributes' => [
+        'async' => TRUE,
+        'src' => $javascript_service->fetchJavascript(),
+      ],
+    ],
+    'microsoft_clarity_tracking_file',
+  ];
+}
+
+/**
+ * Implements hook_cron().
+ */
+function microsoft_clarity_cron() {
+  // Return prematurely if projecty_id is not set or local caching is disabled.
+  $config = \Drupal::config('microsoft_clarity.settings');
+  if (empty($config->get('project_id')) || !$config->get('local_cache')) {
+    return;
+  }
+
+  // Regenerate the tracking code file every day.
+  $request_time = \Drupal::time()->getRequestTime();
+  /** @var \Drupal\microsoft_clarity\JavascriptLocalCache $javascript_service */
+  $javascript_service = \Drupal::service('microsoft_clarity.javascript_cache');
+  if ($request_time - \Drupal::state()->get('microsoft_clarity.last_cache') >= 86400) {
+    $javascript_service->fetchJavascript(TRUE);
+    \Drupal::state()->set('microsoft_clarity.last_cache', $request_time);
+  }
+}

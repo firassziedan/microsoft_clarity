@@ -1,0 +1,30 @@
+# Schema for the configuration files of the microsoft_clarity module.
+microsoft_clarity.settings:
+  type: config_object
+  label: 'Clarity MS settings'
+  mapping:
+    project_id:
+      type: string
+      label: 'Project ID.'
+    visibility:
+      type: mapping
+      label: 'Visibility'
+      mapping:
+        request_path_mode:
+          type: integer
+          label: 'Add tracking to specific pages'
+        request_path_pages:
+          type: string
+          label: 'Pages by their paths'
+        user_role_mode:
+          type: integer
+          label: 'Add tracking for specific roles'
+        user_role_roles:
+          type: sequence
+          label: 'Roles'
+          sequence:
+            type: string
+            label: 'Role'
+    local_cache:
+      type: boolean
+      label: 'Locally cache tracking code file'

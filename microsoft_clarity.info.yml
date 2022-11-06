@@ -1,0 +1,6 @@
+name: 'Microsoft Clarity'
+type: module
+description: 'Provides integration with Microsoft Clarity service a cutting-edge behavioral analysis tool that helps you understand user interaction with your website.'
+package: Statistics
+core_version_requirement: ^8.9 || ^9 || ^10
+configure: microsoft_clarity.admin_settings_form
