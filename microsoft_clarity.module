@@ -9,6 +9,7 @@
  */
 
 use Drupal\Core\Cache\Cache;
+use Drupal\Core\Render\Markup;
 use Drupal\Core\Routing\RouteMatchInterface;
 
 /**
@@ -34,7 +35,8 @@ function microsoft_clarity_page_attachments(array &$page) {
   $page['#cache']['tags'] = Cache::mergeTags($page['#cache']['tags'] ?? [], $config->getCacheTags());
 
   // Return if project_id is not set.
-  if (empty($config->get('project_id'))) {
+  $project_id = $config->get('project_id');
+  if (empty($project_id)) {
     return;
   }
 
@@ -48,6 +50,17 @@ function microsoft_clarity_page_attachments(array &$page) {
 
   /** @var \Drupal\microsoft_clarity\JavascriptLocalCache $javascript_service */
   $javascript_service = \Drupal::service('microsoft_clarity.javascript_cache');
+  // Add Clarity init code.
+  $page['#attached']['html_head'][] = [
+    [
+      '#tag' => 'script',
+      '#attributes' => [
+        'type' => 'text/javascript',
+      ],
+      '#value' => Markup::create("(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};})(window, document, 'clarity', 'script', '" . $project_id . "');"),
+    ],  'microsoft_clarity_init',
+  ];
+  // Add actual Clarity JS cod from server
   $page['#attached']['html_head'][] = [
     [
       '#tag' => 'script',
