@@ -141,7 +141,7 @@ class JavascriptLocalCache {
     }
     // Return the local JS file path.
     $query_string = '?' . ($this->state->get('system.css_js_query_string') ?: '0');
-    return file_url_transform_relative(file_create_url($file_destination)) . $query_string;
+    return \Drupal::service('file_url_generator')->generateString($file_destination) . $query_string;
   }
 
   /**
