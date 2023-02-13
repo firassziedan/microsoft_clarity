@@ -1,4 +1,4 @@
-## CONTENTS OF THIS FILE
+# CONTENTS OF THIS FILE
 
 * Introduction
 * Installation
@@ -11,18 +11,18 @@
 Provides integration with Microsoft Clarity service which enables you to see how
 your users use your website with the help of session recordings and heatmaps.
 
-* For more details on Microsoft Clarity visit https://clarity.microsoft.com.
+* For more details on Microsoft Clarity visit <https://clarity.microsoft.com>.
 
 * For a full description of the module, visit the project page:
-  https://www.drupal.org/project/microsoft_clarity
+  <https://www.drupal.org/project/microsoft_clarity>
 
 * To submit bug reports and feature suggestions, or to track changes:
-  https://www.drupal.org/project/issues/microsoft_clarity
+  <https://www.drupal.org/project/issues/microsoft_clarity>
 
 ## INSTALLATION
 
 * Install as usual, see
-  https://www.drupal.org/docs/8/extending-drupal-8/installing-contributed-modules-find-import-enable-configure-drupal-8
+  <https://www.drupal.org/docs/8/extending-drupal-8/installing-contributed-modules-find-import-enable-configure-drupal-8>
   for further information.
 
 ## CONFIGURATION
@@ -33,5 +33,6 @@ your users use your website with the help of session recordings and heatmaps.
 ## MAINTAINERS
 
 Current maintainers:
-* Firass Ziedan (firass.ziedan) - https://www.drupal.org/u/firassziedan
-* Ivica Puljic (pivica) - https://www.drupal.org/u/pivica
+
+* Firass Ziedan (firass.ziedan) - <https://www.drupal.org/u/firassziedan>
+* Ivica Puljic (pivica) - <https://www.drupal.org/u/pivica>

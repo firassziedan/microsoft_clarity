@@ -1,6 +1,6 @@
 services:
   microsoft_clarity.visibility:
-    class: Drupal\microsoft_clarity\Helpers\VisiblityTracker
+    class: Drupal\microsoft_clarity\Helpers\VisibilityTracker
     arguments: [ '@config.factory', '@path_alias.manager', '@path.matcher', '@path.current' ]
   microsoft_clarity.javascript_cache:
     class: Drupal\microsoft_clarity\JavascriptLocalCache

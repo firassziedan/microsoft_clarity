@@ -13,7 +13,7 @@ use Drupal\path_alias\AliasManagerInterface;
 /**
  * Defines the Path Matcher class.
  */
-class VisiblityTracker {
+class VisibilityTracker {
 
   /**
    * The alias manager.

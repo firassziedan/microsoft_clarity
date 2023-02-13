@@ -2,7 +2,7 @@
     "name": "drupal/microsoft_clarity",
     "description": "Microsoft Clarity is a free, easy-to-use tool that captures how real people actually use your site.",
     "type": "drupal-module",
-    "keywords": ["Drupal", "Heatmaps", "Session replays","Third-party Integration", "Clarity", "Microsoft"],
+    "keywords": ["Drupal", "Heatmaps", "Session replays","Third-party Integration", "Clarity", "Microsoft", "Analytics", "Microsoft Clarity"],
     "license": "GPL-2.0-or-later",
     "authors": [
         {
@@ -15,8 +15,8 @@
         }
     ],
     "support": {
-      "issues": "https://www.drupal.org/project/issues/microsoft_clarity",
-      "source": "https://git.drupalcode.org/project/microsoft_clarity"
+        "issues": "https://www.drupal.org/project/issues/microsoft_clarity",
+        "source": "https://git.drupalcode.org/project/microsoft_clarity"
     },
     "require": {}
 }

@@ -18,7 +18,7 @@ use Drupal\Core\Routing\RouteMatchInterface;
 function microsoft_clarity_help($route_name, RouteMatchInterface $route_match) {
   if ($route_name === 'help.page.microsoft_clarity') {
     $output = '<h3>' . t('About') . '</h3>';
-    $output .= '<p>' . t('<a href=":project">Clarity</a> is a free, easy-to-use tool that captures how real people actually use your site. Setup is easy, and you will start getting data in minutes. Easily get heatmaps, session recordings and more. GDPR and CCPA ready, no sampling and built on open source.', [':project' => 'https://clarity.microsoft.com/']) . '</p>';
+    $output .= '<p>' . t('<a href=":project">Clarity</a> is a free, easy-to-use tool that captures how real people actually use your site. Setup is easy, and you will start getting data in minutes. Easily get heatmap, session recordings and more. GDPR and CCPA ready, no sampling and built on open source.', [':project' => 'https://clarity.microsoft.com/']) . '</p>';
     return $output;
   }
 }
@@ -42,7 +42,7 @@ function microsoft_clarity_page_attachments(array &$page) {
 
   // Return if current request is not in tracking scope.
   $account = \Drupal::currentUser();
-  /** @var \Drupal\microsoft_clarity\Helpers\VisiblityTracker $visibilityTracker */
+  /** @var \Drupal\microsoft_clarity\Helpers\VisibilityTracker $visibilityTracker */
   $visibilityTracker = \Drupal::service('microsoft_clarity.visibility');
   if (!$visibilityTracker->getVisibilityPages() || !$visibilityTracker->getVisibilityRoles($account)) {
     return;
