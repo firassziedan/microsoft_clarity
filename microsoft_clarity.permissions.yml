@@ -1,3 +1,7 @@
 administer microsoft clarity:
   title: 'Administer Microsoft Clarity'
   description: 'Perform maintenance tasks for Microsoft Clarity behavioral analysis tool.'
+
+view microsoft clarity dashboard:
+  title: 'View Microsoft Clarity Dashboard'
+  description: 'View Microsoft Clarity analysis Dashboard'

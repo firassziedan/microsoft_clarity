@@ -5,3 +5,11 @@ microsoft_clarity.admin_settings_form:
     _title: 'Microsoft Clarity'
   requirements:
     _permission: 'administer microsoft clarity'
+
+microsoft_clarity.dashboard:
+  path: '/admin/reports/clarity-dashboard'
+  defaults:
+    _controller: '\Drupal\microsoft_clarity\Controller\ClarityDashboard::dashboard'
+    _title: 'Microsoft Clarity Dashboard'
+  requirements:
+    _permission: 'view microsoft clarity dashboard'
