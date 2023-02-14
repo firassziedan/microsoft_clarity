@@ -2,7 +2,6 @@
 namespace Drupal\microsoft_clarity\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\Core\Config\StorageComparer;
 
 /**
  * Class ClarityDashboard.
