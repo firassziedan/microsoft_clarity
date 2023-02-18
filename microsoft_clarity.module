@@ -29,7 +29,7 @@ function microsoft_clarity_help($route_name, RouteMatchInterface $route_match) {
  * Insert JavaScript to the appropriate scope/region of the page.
  */
 function microsoft_clarity_page_attachments(array &$page) {
-  $config = \Drupal::config('microsoft_clarity.settings');
+  $config = Drupal::config('microsoft_clarity.settings');
 
   // Add module cache tags.
   $page['#cache']['tags'] = Cache::mergeTags($page['#cache']['tags'] ?? [], $config->getCacheTags());
@@ -41,15 +41,15 @@ function microsoft_clarity_page_attachments(array &$page) {
   }
 
   // Return if current request is not in tracking scope.
-  $account = \Drupal::currentUser();
+  $account = Drupal::currentUser();
   /** @var \Drupal\microsoft_clarity\Helpers\VisibilityTracker $visibilityTracker */
-  $visibilityTracker = \Drupal::service('microsoft_clarity.visibility');
+  $visibilityTracker = Drupal::service('microsoft_clarity.visibility');
   if (!$visibilityTracker->getVisibilityPages() || !$visibilityTracker->getVisibilityRoles($account)) {
     return;
   }
 
   /** @var \Drupal\microsoft_clarity\JavascriptLocalCache $javascript_service */
-  $javascript_service = \Drupal::service('microsoft_clarity.javascript_cache');
+  $javascript_service = Drupal::service('microsoft_clarity.javascript_cache');
   // Add Clarity init code.
   $page['#attached']['html_head'][] = [
     [
@@ -58,7 +58,8 @@ function microsoft_clarity_page_attachments(array &$page) {
         'type' => 'text/javascript',
       ],
       '#value' => Markup::create("(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};})(window, document, 'clarity', 'script', '" . $project_id . "');"),
-    ],  'microsoft_clarity_init',
+    ],
+    'microsoft_clarity_init',
   ];
   // Add actual Clarity JS cod from server
   $page['#attached']['html_head'][] = [
@@ -78,17 +79,18 @@ function microsoft_clarity_page_attachments(array &$page) {
  */
 function microsoft_clarity_cron() {
   // Return prematurely if projecty_id is not set or local caching is disabled.
-  $config = \Drupal::config('microsoft_clarity.settings');
+  $config = Drupal::config('microsoft_clarity.settings');
   if (empty($config->get('project_id')) || !$config->get('local_cache')) {
     return;
   }
 
   // Regenerate the tracking code file every day.
-  $request_time = \Drupal::time()->getRequestTime();
+  $request_time = Drupal::time()->getRequestTime();
   /** @var \Drupal\microsoft_clarity\JavascriptLocalCache $javascript_service */
-  $javascript_service = \Drupal::service('microsoft_clarity.javascript_cache');
-  if ($request_time - \Drupal::state()->get('microsoft_clarity.last_cache') >= 86400) {
+  $javascript_service = Drupal::service('microsoft_clarity.javascript_cache');
+  if ($request_time - Drupal::state()
+      ->get('microsoft_clarity.last_cache') >= 86400) {
     $javascript_service->fetchJavascript(TRUE);
-    \Drupal::state()->set('microsoft_clarity.last_cache', $request_time);
+    Drupal::state()->set('microsoft_clarity.last_cache', $request_time);
   }
 }

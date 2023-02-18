@@ -53,13 +53,6 @@ class SettingsForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  protected function getEditableConfigNames() {
-    return ['microsoft_clarity.settings'];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $config = $this->config('microsoft_clarity.settings');
 
@@ -97,7 +90,11 @@ class SettingsForm extends ConfigFormBase {
       '#title_display' => 'invisible',
       '#default_value' => !empty($visibility_request_path_pages) ? $visibility_request_path_pages : '',
       '#description' => $this->t("Specify pages by using their paths. Enter one path per line. The '*' character is a wildcard. Example paths are %blog for the blog page and %blog-wildcard for every personal blog. %front is the front page.",
-        ['%blog' => '/blog', '%blog-wildcard' => '/blog/*', '%front' => '<front>']
+        [
+          '%blog' => '/blog',
+          '%blog-wildcard' => '/blog/*',
+          '%front' => '<front>',
+        ]
       ),
       '#rows' => 10,
     ];
@@ -190,6 +187,13 @@ class SettingsForm extends ConfigFormBase {
       ->save();
 
     parent::submitForm($form, $form_state);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getEditableConfigNames() {
+    return ['microsoft_clarity.settings'];
   }
 
 }

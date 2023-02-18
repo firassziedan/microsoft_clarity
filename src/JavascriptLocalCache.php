@@ -2,10 +2,11 @@
 
 namespace Drupal\microsoft_clarity;
 
+use Drupal;
 use Drupal\Component\Utility\Crypt;
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\File\FileSystem;
+use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\Core\State\StateInterface;
@@ -87,11 +88,13 @@ class JavascriptLocalCache {
    *   The path to the local or remote tracking file.
    */
   public function fetchJavascript(bool $synchronize = FALSE) {
-    $project_id = $this->configFactory->get('microsoft_clarity.settings')->get('project_id');
+    $project_id = $this->configFactory->get('microsoft_clarity.settings')
+      ->get('project_id');
     $remote_url = $this->clarityURL . $project_id;
 
     // If cache is disabled, just return the URL of Clarity JS server.
-    if (!$this->configFactory->get('microsoft_clarity.settings')->get('local_cache')) {
+    if (!$this->configFactory->get('microsoft_clarity.settings')
+      ->get('local_cache')) {
       return $remote_url;
     }
 
@@ -110,7 +113,8 @@ class JavascriptLocalCache {
             // Save updated tracking code file to disk.
             $this->fileSystem->saveData($data, $file_destination, FileSystemInterface::EXISTS_REPLACE);
             // Based on Drupal Core class AssetDumper.
-            if (extension_loaded('zlib') && $this->configFactory->get('system.performance')->get('js.gzip')) {
+            if (extension_loaded('zlib') && $this->configFactory->get('system.performance')
+                ->get('js.gzip')) {
               $this->fileSystem->saveData(gzencode($data, 9, FORCE_GZIP), $file_destination . '.gz', FileSystemInterface::EXISTS_REPLACE);
             }
             $this->logger->info('Locally cached tracking code file has been updated.');
@@ -127,21 +131,22 @@ class JavascriptLocalCache {
             // automatically, if new files are added.
             $this->fileSystem->saveData($data, $file_destination, FileSystemInterface::EXISTS_REPLACE);
             // Based on Drupal Core class AssetDumper.
-            if (extension_loaded('zlib') && $this->configFactory->get('system.performance')->get('js.gzip')) {
+            if (extension_loaded('zlib') && $this->configFactory->get('system.performance')
+                ->get('js.gzip')) {
               $this->fileSystem->saveData(gzencode($data, 9, FORCE_GZIP), $file_destination . '.gz', FileSystemInterface::EXISTS_REPLACE);
             }
             $this->logger->info('Locally cached tracking code file has been saved.');
           }
         }
-      }
-      catch (RequestException $exception) {
+      } catch (RequestException $exception) {
         watchdog_exception('microsoft_clarity', $exception);
         return $remote_url;
       }
     }
     // Return the local JS file path.
     $query_string = '?' . ($this->state->get('system.css_js_query_string') ?: '0');
-    return \Drupal::service('file_url_generator')->generateString($file_destination) . $query_string;
+    return Drupal::service('file_url_generator')
+        ->generateString($file_destination) . $query_string;
   }
 
   /**
